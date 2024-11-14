@@ -56,13 +56,10 @@ app.post('/api/fileanalyse', (req, res) => {
     if (err) {
       res.status(400).send({ message: err });
     } else {
-      if (req.file == undefined) {
+      if (!req.file) {
         res.status(400).send({ message: 'No file selected!' });
       } else {
-        const buffer = Buffer.alloc(4)
-        buffer.writeUInt32BE(req.file.size)
-        const sizeInByte = buffer.toString('hex')
-        const file = new File(req.file.originalname, req.file.mimetype, sizeInByte)
+        const file = new File(req.file.originalname, req.file.mimetype, req.file.size);
         res.json(file);
       }
     }
