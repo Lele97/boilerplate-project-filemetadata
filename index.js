@@ -3,21 +3,12 @@ const cors = require('cors');
 require('dotenv').config();
 const multer = require('multer');
 const path = require('path');
-
 const app = express();
 
 app.use(cors());
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-class File {
-  constructor(name, type, size) {
-    this.name = name;
-    this.type = type;
-    this.size = size;
-  }
-}
 
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
@@ -59,8 +50,11 @@ app.post('/api/fileanalyse', (req, res) => {
       if (!req.file) {
         res.status(400).send({ message: 'No file selected!' });
       } else {
-        const file = new File(req.file.originalname, req.file.mimetype, req.file.size);
-        res.json(file);
+        res.json({
+          name: req.file.originalname,
+          type: req.file.mimetype,
+          size: req.file.size
+        });
       }
     }
   });
