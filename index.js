@@ -62,7 +62,7 @@ app.post('/api/fileanalyse', (req, res) => {
         const buffer = Buffer.alloc(4)
         buffer.writeUInt32BE(req.file.size)
         const sizeInByte = buffer.toString('hex')
-        const file = new File(req.file.filename, req.file.mimetype, sizeInByte)
+        const file = new File(req.file.originalname, req.file.mimetype, sizeInByte)
         res.json(file);
       }
     }
