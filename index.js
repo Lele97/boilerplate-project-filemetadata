@@ -59,7 +59,10 @@ app.post('/api/fileanalyse', (req, res) => {
       if (req.file == undefined) {
         res.status(400).send({ message: 'No file selected!' });
       } else {
-        const file = new File(req.file.filename, req.file.mimetype, req.file.size)
+        const buffer = Buffer.alloc(4)
+        buffer.writeUInt32BE(req.file.size)
+        const sizeInByte = buffer.toString()
+        const file = new File(req.file.filename, req.file.mimetype, sizeInByte)
         res.json(file);
       }
     }
